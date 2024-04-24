@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { ViteMinifyPlugin } from 'vite-plugin-minify';
+import pluginPurgeCss from 'vite-plugin-purgecss-updated-v5';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -28,5 +30,16 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  plugins: [],
+  plugins: [
+    // HTML minification
+    ViteMinifyPlugin({
+      removeComments: true,
+    }),
+    // Purge CSS: remove unused CSS class
+    pluginPurgeCss({
+      content: ['./src/**/*.html'],
+      sourceMap: true,
+      variables: true,
+    }),
+  ],
 });
